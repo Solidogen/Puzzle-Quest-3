@@ -124,6 +124,7 @@ public class Board : MonoBehaviour
             nullCount = 0;
         });
         yield return new WaitForSeconds(0.4f);
+        StartCoroutine(FillBoardCoroutine());
     }
 
     private void doForEveryDot(Action<int, int> mainAction, Action afterEachColumnAction = null)
@@ -135,6 +136,44 @@ public class Board : MonoBehaviour
                 mainAction.Invoke(i, j);
             }
             afterEachColumnAction?.Invoke();
+        }
+    }
+
+    private void RefillBoard()
+    {
+        doForEveryDot((i, j) => {
+            var dotAtCoordinates = allDotsOnBoard[i, j];
+            if (dotAtCoordinates == null)
+            {
+                var tempPosition = new Vector2(i, j);
+                var dotToUse = Random.Range(0, availableDotTypes.Length);
+                var gameObject = Instantiate(availableDotTypes[dotToUse], tempPosition, Quaternion.identity);
+                dotAtCoordinates = gameObject;
+            }
+        });
+    }
+
+    private bool AreAnyMatchesOnBoard()
+    {
+        var areAnyMatchesOnBoard = false;
+        doForEveryDot((i, j) => {
+            var dotAtCoordinates = allDotsOnBoard[i, j];
+            if (dotAtCoordinates != null && dotAtCoordinates.GetComponent<Dot>().isMatched)
+            {
+                areAnyMatchesOnBoard = true;
+            }
+        });
+        return areAnyMatchesOnBoard;
+    }
+
+    private IEnumerator FillBoardCoroutine()
+    {
+        RefillBoard();
+        yield return new WaitForSeconds(0.5f);
+        while(AreAnyMatchesOnBoard())
+        {
+            yield return new WaitForSeconds(0.5f);
+            DestroyAllMatches();
         }
     }
 }
