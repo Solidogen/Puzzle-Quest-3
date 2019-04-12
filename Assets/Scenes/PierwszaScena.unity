@@ -159,6 +159,15 @@ MonoBehaviour:
   height: 10
   tilePrefab: {fileID: 4598511092701461150, guid: 3217a845f1d1f794a94d462bd07d78de,
     type: 3}
+  dots:
+  - {fileID: 1424022350696708245, guid: 9f3754de08eb8174e9aaa4881c25444c, type: 3}
+  - {fileID: 1457035798359930948, guid: 8f2a21887531363489b02d9b4de39db9, type: 3}
+  - {fileID: 6652129111207035746, guid: 1a3d30c1630425f4c87d0c80204557b3, type: 3}
+  - {fileID: 9203093525433107789, guid: 4d70296b0ae87ee4bbcfcac27ac42a56, type: 3}
+  - {fileID: 1826601385942072916, guid: 4b534de9cb84b6543bcf1a0fbb7113c9, type: 3}
+  - {fileID: 6497786279101397246, guid: 2552123666e8c4840b2ad5455d8a4b13, type: 3}
+  - {fileID: 8244336297771335656, guid: 1839aa5dd6ea127439bd4476635bd6fc, type: 3}
+  - {fileID: 4896424776957117767, guid: 9a08dd02eb26d144e81f03e9a6d5bdd3, type: 3}
 --- !u!1 &1209950998
 GameObject:
   m_ObjectHideFlags: 0

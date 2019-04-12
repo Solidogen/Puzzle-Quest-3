@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BackgroundTile : MonoBehaviour
 {
-    public GameObject[] dots;
-
     void Start()
     {
         Setup();
@@ -18,9 +16,6 @@ public class BackgroundTile : MonoBehaviour
 
     void Setup()
     {
-        int dotToUse = Random.Range(0, dots.Length);
-        GameObject dot = Instantiate(dots[dotToUse], transform.position, Quaternion.identity);
-        dot.transform.parent = transform;
-        dot.name = gameObject.name;
+
     }
 }
