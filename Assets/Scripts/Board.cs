@@ -8,6 +8,7 @@ public class Board : MonoBehaviour
 {
     public int width;
     public int height;
+    public int offset;
     public GameObject tilePrefab;
     public GameObject[] availableDotTypes;
     public GameObject[,] allDotsOnBoard;
@@ -26,7 +27,7 @@ public class Board : MonoBehaviour
         {
             var cellName = $"( {i}, {j} )";
 
-            var tempPosition = new Vector2(i, j);
+            var tempPosition = new Vector2(i, j + offset);
             var backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
             backgroundTile.name = "bg";
 
@@ -41,6 +42,8 @@ public class Board : MonoBehaviour
             }
 
             GameObject dot = Instantiate(availableDotTypes[dotToUse], tempPosition, Quaternion.identity);
+            dot.GetComponent<Dot>().row = j;
+            dot.GetComponent<Dot>().column = i;
             dot.transform.parent = transform;
             dot.name = "dot" + cellName;
             backgroundTile.transform.parent = dot.transform;
@@ -142,10 +145,12 @@ public class Board : MonoBehaviour
         doForEveryDot((i, j) => {
             if (allDotsOnBoard[i, j] == null)
             {
-                var tempPosition = new Vector2(i, j);
+                var tempPosition = new Vector2(i, j + offset);
                 var dotToUse = Random.Range(0, availableDotTypes.Length);
                 var gameObject = Instantiate(availableDotTypes[dotToUse], tempPosition, Quaternion.identity);
                 allDotsOnBoard[i, j] = gameObject;
+                gameObject.GetComponent<Dot>().column = i;
+                gameObject.GetComponent<Dot>().row = j;
             }
         });
     }

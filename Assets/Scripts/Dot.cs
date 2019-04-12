@@ -23,12 +23,12 @@ public class Dot : MonoBehaviour
     void Start()
     {
         board = FindObjectOfType<Board>();
-        targetX = (int)transform.position.x;
-        column = targetX;
-        previousColumn = column;
-        targetY = (int)transform.position.y;
-        row = targetY;
-        previousRow = row;
+        // targetX = (int)transform.position.x;
+        // targetY = (int)transform.position.y;
+        // column = targetX;
+        // row = targetY;
+        // previousColumn = column;
+        // previousRow = row;
     }
 
     void Update()
@@ -133,6 +133,8 @@ public class Dot : MonoBehaviour
                 if (column < board.width - 1)
                 {
                     otherDot = board.allDotsOnBoard[column + 1, row];
+                    previousRow = row;
+                    previousColumn = column;
                     otherDot.GetComponent<Dot>().column--;
                     column++;
                 }
@@ -141,6 +143,8 @@ public class Dot : MonoBehaviour
                 if (row < board.height - 1)
                 {
                     otherDot = board.allDotsOnBoard[column, row + 1];
+                    previousRow = row;
+                    previousColumn = column;
                     otherDot.GetComponent<Dot>().row--;
                     row++;
                 }
@@ -149,6 +153,8 @@ public class Dot : MonoBehaviour
                 if (column > 0)
                 {
                     otherDot = board.allDotsOnBoard[column - 1, row];
+                    previousRow = row;
+                    previousColumn = column;
                     otherDot.GetComponent<Dot>().column++;
                     column--;
                 }
@@ -157,6 +163,8 @@ public class Dot : MonoBehaviour
                 if (row > 0)
                 {
                     otherDot = board.allDotsOnBoard[column, row - 1];
+                    previousRow = row;
+                    previousColumn = column;
                     otherDot.GetComponent<Dot>().row++;
                     row--;
                 }
