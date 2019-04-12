@@ -9,6 +9,7 @@ public class Dot : MonoBehaviour
     public int row;
     public int targetX;
     public int targetY;
+    public bool isMatched = false;
     private Board board;
     private GameObject otherDot;
     private Vector2 firstTouchPosition;
@@ -27,6 +28,11 @@ public class Dot : MonoBehaviour
 
     void Update()
     {
+        FindMatches();
+        if (isMatched) {
+            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+            sprite.color = new Color(1f, 1f, 1f, .2f);
+        }
         targetX = column;
         targetY = row;
         // X
@@ -68,6 +74,10 @@ public class Dot : MonoBehaviour
 
     private void CalculateAngle()
     {
+        if (firstTouchPosition.Equals(finalTouchPosition))
+        {
+            return;
+        }
         radianAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
         CheckAngle();
     }
@@ -111,6 +121,28 @@ public class Dot : MonoBehaviour
                     row--;
                 }
                 break;
+        }
+    }
+
+    private void FindMatches()
+    {
+        if (column > 0 && column < board.width - 1)
+        {
+            GameObject leftDot1 = board.allDotsOnBoard[column-1, row];
+            GameObject rightDot1 = board.allDotsOnBoard[column+1, row];
+            if (leftDot1.tag == gameObject.tag && rightDot1.tag == gameObject.tag) {
+                leftDot1.GetComponent<Dot>().isMatched = true;
+                rightDot1.GetComponent<Dot>().isMatched = true;
+            }
+        }
+        if (row > 0 && row < board.height - 1)
+        {
+            GameObject upDot1 = board.allDotsOnBoard[column, row+1];
+            GameObject downDot1 = board.allDotsOnBoard[column, row-1];
+            if (upDot1.tag == gameObject.tag && downDot1.tag == gameObject.tag) {
+                upDot1.GetComponent<Dot>().isMatched = true;
+                downDot1.GetComponent<Dot>().isMatched = true;
+            }
         }
     }
 }
