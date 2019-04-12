@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class Dot : MonoBehaviour
 {
+    [Header("Board Variables")]
     public int column;
     public int row;
+    public int previousColumn;
+    public int previousRow;
     public int targetX;
     public int targetY;
     public bool isMatched = false;
@@ -22,8 +25,10 @@ public class Dot : MonoBehaviour
         board = FindObjectOfType<Board>();
         targetX = (int)transform.position.x;
         column = targetX;
+        previousColumn = column;
         targetY = (int)transform.position.y;
         row = targetY;
+        previousRow = row;
     }
 
     void Update()
@@ -40,7 +45,7 @@ public class Dot : MonoBehaviour
         if (Mathf.Abs(targetX - transform.position.x) > 0.1f)
         {
             // move towards the target
-            transform.position = Vector2.Lerp(transform.position, tempPosition, 0.4f);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, 0.3f);
         }
         else
         {
@@ -53,7 +58,7 @@ public class Dot : MonoBehaviour
         if (Mathf.Abs(targetY - transform.position.y) > 0.1f)
         {
             // move towards the target
-            transform.position = Vector2.Lerp(transform.position, tempPosition, 0.4f);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, 0.3f);
         }
         else
         {
@@ -62,6 +67,22 @@ public class Dot : MonoBehaviour
             board.allDotsOnBoard[column, row] = gameObject;
         }
         name = "dot" + $"( {column}, {row} )";;
+    }
+
+    public IEnumerator CheckMoveCoroutine() {
+        yield return new WaitForSeconds(0.3f);
+        if (otherDot != null)
+        {
+            var otherDotScript = otherDot.GetComponent<Dot>();
+            if (!isMatched && !otherDotScript.isMatched)
+            {
+                otherDotScript.column = column;
+                otherDotScript.row = row;
+                row = previousRow;
+                column = previousColumn;
+            }
+            otherDot = null;
+        }
     }
 
     private void OnMouseDown() {
@@ -95,14 +116,14 @@ public class Dot : MonoBehaviour
         switch (swipeAngle)
         {
             case SwipeAngle.Right:
-                if (column < board.width) {
+                if (column < board.width - 1) {
                     otherDot = board.allDotsOnBoard[column + 1, row];
                     otherDot.GetComponent<Dot>().column--;
                     column++;
                 }
                 break;
             case SwipeAngle.Up:
-                if (row < board.height) {
+                if (row < board.height - 1) {
                     otherDot = board.allDotsOnBoard[column, row + 1];
                     otherDot.GetComponent<Dot>().row--;
                     row++;
@@ -123,6 +144,7 @@ public class Dot : MonoBehaviour
                 }
                 break;
         }
+        StartCoroutine(CheckMoveCoroutine());
     }
 
     private void FindMatches()
