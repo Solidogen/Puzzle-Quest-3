@@ -23,12 +23,6 @@ public class Dot : MonoBehaviour
     void Start()
     {
         board = FindObjectOfType<Board>();
-        // targetX = (int)transform.position.x;
-        // targetY = (int)transform.position.y;
-        // column = targetX;
-        // row = targetY;
-        // previousColumn = column;
-        // previousRow = row;
     }
 
     void Update()
@@ -88,6 +82,8 @@ public class Dot : MonoBehaviour
                 otherDotScript.row = row;
                 row = previousRow;
                 column = previousColumn;
+                yield return new WaitForSeconds(0.5f);
+                board.currentState = GameState.Move;
             }
             else
             {
@@ -99,11 +95,19 @@ public class Dot : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (board.currentState == GameState.Wait)
+        {
+            return;
+        }
         firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
     private void OnMouseUp()
     {
+        if (board.currentState == GameState.Wait)
+        {
+            return;
+        }
         finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         CalculateAngle();
     }
@@ -112,10 +116,12 @@ public class Dot : MonoBehaviour
     {
         if (firstTouchPosition.Equals(finalTouchPosition))
         {
+            board.currentState = GameState.Move;
             return;
         }
         radianAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
         CheckAngle();
+        board.currentState = GameState.Wait;
     }
 
     private void CheckAngle()

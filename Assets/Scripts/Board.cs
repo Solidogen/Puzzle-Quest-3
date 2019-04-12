@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class Board : MonoBehaviour
 {
+    public GameState currentState = GameState.Move;
     public int width;
     public int height;
     public int offset;
@@ -176,5 +177,7 @@ public class Board : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             DestroyAllMatches();
         }
+        yield return new WaitForSeconds(0.5f);
+        currentState = GameState.Move;
     }
 }
