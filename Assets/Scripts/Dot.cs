@@ -83,6 +83,10 @@ public class Dot : MonoBehaviour
                 row = previousRow;
                 column = previousColumn;
             }
+            else
+            {
+                board.DestroyAllMatches();
+            }
             otherDot = null;
         }
     }
