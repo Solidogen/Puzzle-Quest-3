@@ -34,7 +34,8 @@ public class Dot : MonoBehaviour
     void Update()
     {
         FindMatches();
-        if (isMatched) {
+        if (isMatched)
+        {
             SpriteRenderer sprite = GetComponent<SpriteRenderer>();
             sprite.color = new Color(1f, 1f, 1f, .2f);
         }
@@ -66,10 +67,11 @@ public class Dot : MonoBehaviour
             transform.position = tempPosition;
             board.allDotsOnBoard[column, row] = gameObject;
         }
-        name = "dot" + $"( {column}, {row} )";;
+        name = "dot" + $"( {column}, {row} )"; ;
     }
 
-    public IEnumerator CheckMoveCoroutine() {
+    public IEnumerator CheckMoveCoroutine()
+    {
         yield return new WaitForSeconds(0.3f);
         if (otherDot != null)
         {
@@ -85,11 +87,13 @@ public class Dot : MonoBehaviour
         }
     }
 
-    private void OnMouseDown() {
+    private void OnMouseDown()
+    {
         firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
-    private void OnMouseUp() {
+    private void OnMouseUp()
+    {
         finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         CalculateAngle();
     }
@@ -116,28 +120,32 @@ public class Dot : MonoBehaviour
         switch (swipeAngle)
         {
             case SwipeAngle.Right:
-                if (column < board.width - 1) {
+                if (column < board.width - 1)
+                {
                     otherDot = board.allDotsOnBoard[column + 1, row];
                     otherDot.GetComponent<Dot>().column--;
                     column++;
                 }
                 break;
             case SwipeAngle.Up:
-                if (row < board.height - 1) {
+                if (row < board.height - 1)
+                {
                     otherDot = board.allDotsOnBoard[column, row + 1];
                     otherDot.GetComponent<Dot>().row--;
                     row++;
                 }
                 break;
             case SwipeAngle.Left:
-                if (column > 0) {
+                if (column > 0)
+                {
                     otherDot = board.allDotsOnBoard[column - 1, row];
                     otherDot.GetComponent<Dot>().column++;
                     column--;
                 }
                 break;
             case SwipeAngle.Down:
-                if (row > 0) {
+                if (row > 0)
+                {
                     otherDot = board.allDotsOnBoard[column, row - 1];
                     otherDot.GetComponent<Dot>().row++;
                     row--;
@@ -151,22 +159,31 @@ public class Dot : MonoBehaviour
     {
         if (column > 0 && column < board.width - 1)
         {
-            GameObject leftDot1 = board.allDotsOnBoard[column-1, row];
-            GameObject rightDot1 = board.allDotsOnBoard[column+1, row];
-            if (leftDot1.tag == gameObject.tag && rightDot1.tag == gameObject.tag) {
-                isMatched = true;
-                leftDot1.GetComponent<Dot>().isMatched = true;
-                rightDot1.GetComponent<Dot>().isMatched = true;
+            GameObject leftDot1 = board.allDotsOnBoard[column - 1, row];
+            GameObject rightDot1 = board.allDotsOnBoard[column + 1, row];
+            if (leftDot1 != null && rightDot1 != null)
+            {
+                if (leftDot1.tag == gameObject.tag && rightDot1.tag == gameObject.tag)
+                {
+                    isMatched = true;
+                    leftDot1.GetComponent<Dot>().isMatched = true;
+                    rightDot1.GetComponent<Dot>().isMatched = true;
+                }
             }
+
         }
         if (row > 0 && row < board.height - 1)
         {
-            GameObject upDot1 = board.allDotsOnBoard[column, row+1];
-            GameObject downDot1 = board.allDotsOnBoard[column, row-1];
-            if (upDot1.tag == gameObject.tag && downDot1.tag == gameObject.tag) {
-                isMatched = true;
-                upDot1.GetComponent<Dot>().isMatched = true;
-                downDot1.GetComponent<Dot>().isMatched = true;
+            GameObject upDot1 = board.allDotsOnBoard[column, row + 1];
+            GameObject downDot1 = board.allDotsOnBoard[column, row - 1];
+            if (upDot1 != null && downDot1 != null)
+            {
+                if (upDot1.tag == gameObject.tag && downDot1.tag == gameObject.tag)
+                {
+                    isMatched = true;
+                    upDot1.GetComponent<Dot>().isMatched = true;
+                    downDot1.GetComponent<Dot>().isMatched = true;
+                }
             }
         }
     }

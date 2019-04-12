@@ -31,6 +31,15 @@ public class Board : MonoBehaviour
                 backgroundTile.name = "bg";
 
                 int dotToUse = Random.Range(0, availableDotTypes.Length);
+
+                int maxIterations = 0;
+                while(MatchesAt(i, j, availableDotTypes[dotToUse]) && maxIterations < 100)
+                {
+                    dotToUse = Random.Range(0, availableDotTypes.Length);
+                    maxIterations++;
+                    Debug.Log(maxIterations);
+                }
+
                 GameObject dot = Instantiate(availableDotTypes[dotToUse], tempPosition, Quaternion.identity);
                 dot.transform.parent = transform;
                 dot.name = "dot" + cellName;
@@ -39,5 +48,42 @@ public class Board : MonoBehaviour
                 allDotsOnBoard[i, j] = dot;
             }
         }
+    }
+
+    private bool MatchesAt(int column, int row, GameObject gameObject)
+    {
+        if (column > 1 && row > 1)
+        {
+            if (allDotsOnBoard[column - 1, row].tag == gameObject.tag &&
+                allDotsOnBoard[column - 2, row].tag == gameObject.tag)
+            {
+                return true;
+            }
+            if (allDotsOnBoard[column, row - 1].tag == gameObject.tag &&
+                allDotsOnBoard[column, row - 2].tag == gameObject.tag)
+            {
+                return true;
+            }
+        }
+        else if (column <= 1 || row <= 1)
+        {
+            if (row > 1)
+            {
+                if (allDotsOnBoard[column, row - 1].tag == gameObject.tag &&
+                    allDotsOnBoard[column, row - 2].tag == gameObject.tag)
+                    {
+                        return true;
+                    }
+            }
+            if (column > 1)
+            {
+                if (allDotsOnBoard[column - 1, row].tag == gameObject.tag &&
+                    allDotsOnBoard[column - 2, row].tag == gameObject.tag)
+                    {
+                        return true;
+                    }
+            }
+        }
+        return false;
     }
 }
