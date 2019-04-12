@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Board : MonoBehaviour
 {
@@ -99,11 +101,24 @@ public class Board : MonoBehaviour
 
     public void DestroyAllMatches()
     {
+        doForEveryDot((i, j) => {
+            DestroyMatchesAt(i, j);
+        });
+    }
+
+    private IEnumerator DecreaseRowCoroutine()
+    {
+        int nullCount = 0;
+        yield return new WaitForSeconds(0.4f);
+    }
+
+    private void doForEveryDot(Action<int, int> action)
+    {
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
             {
-                DestroyMatchesAt(i, j);
+                action.Invoke(i, j);
             }
         }
     }
