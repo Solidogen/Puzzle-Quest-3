@@ -28,13 +28,13 @@ public class Board : MonoBehaviour
 
                 var tempPosition = new Vector2(i, j);
                 var backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
-                backgroundTile.transform.parent = transform;
-                backgroundTile.name = cellName;
+                backgroundTile.name = "bg";
 
                 int dotToUse = Random.Range(0, availableDotTypes.Length);
                 GameObject dot = Instantiate(availableDotTypes[dotToUse], tempPosition, Quaternion.identity);
                 dot.transform.parent = transform;
-                dot.name = cellName;
+                dot.name = "dot" + cellName;
+                backgroundTile.transform.parent = dot.transform;
 
                 allDotsOnBoard[i, j] = dot;
             }

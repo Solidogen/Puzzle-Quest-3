@@ -61,6 +61,7 @@ public class Dot : MonoBehaviour
             transform.position = tempPosition;
             board.allDotsOnBoard[column, row] = gameObject;
         }
+        name = "dot" + $"( {column}, {row} )";;
     }
 
     private void OnMouseDown() {
@@ -131,6 +132,7 @@ public class Dot : MonoBehaviour
             GameObject leftDot1 = board.allDotsOnBoard[column-1, row];
             GameObject rightDot1 = board.allDotsOnBoard[column+1, row];
             if (leftDot1.tag == gameObject.tag && rightDot1.tag == gameObject.tag) {
+                isMatched = true;
                 leftDot1.GetComponent<Dot>().isMatched = true;
                 rightDot1.GetComponent<Dot>().isMatched = true;
             }
@@ -140,6 +142,7 @@ public class Dot : MonoBehaviour
             GameObject upDot1 = board.allDotsOnBoard[column, row+1];
             GameObject downDot1 = board.allDotsOnBoard[column, row-1];
             if (upDot1.tag == gameObject.tag && downDot1.tag == gameObject.tag) {
+                isMatched = true;
                 upDot1.GetComponent<Dot>().isMatched = true;
                 downDot1.GetComponent<Dot>().isMatched = true;
             }
