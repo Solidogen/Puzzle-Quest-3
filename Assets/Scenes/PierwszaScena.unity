@@ -155,6 +155,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bbf275daf7595245bd13da5d90631e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  width: 4
+  height: 7
+  tilePrefab: {fileID: 4598511092701461150, guid: 3217a845f1d1f794a94d462bd07d78de,
+    type: 3}
 --- !u!1 &1209950998
 GameObject:
   m_ObjectHideFlags: 0
