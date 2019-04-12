@@ -43,16 +43,20 @@ public class Dot : MonoBehaviour
         targetY = row;
         // X
         tempPosition = new Vector2(targetX, transform.position.y);
+        var dotAtCoordinates = board.allDotsOnBoard[column, row];
         if (Mathf.Abs(targetX - transform.position.x) > 0.1f)
         {
             // move towards the target
             transform.position = Vector2.Lerp(transform.position, tempPosition, 0.3f);
+            if (dotAtCoordinates != gameObject)
+            {
+                dotAtCoordinates = gameObject;
+            }
         }
         else
         {
             // directly set the position
             transform.position = tempPosition;
-            board.allDotsOnBoard[column, row] = gameObject;
         }
         // Y
         tempPosition = new Vector2(transform.position.x, targetY);
@@ -60,12 +64,15 @@ public class Dot : MonoBehaviour
         {
             // move towards the target
             transform.position = Vector2.Lerp(transform.position, tempPosition, 0.3f);
+            if (dotAtCoordinates != gameObject)
+            {
+                dotAtCoordinates = gameObject;
+            }
         }
         else
         {
             // directly set the position
             transform.position = tempPosition;
-            board.allDotsOnBoard[column, row] = gameObject;
         }
         name = "dot" + $"( {column}, {row} )"; ;
     }

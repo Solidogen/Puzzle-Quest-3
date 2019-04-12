@@ -103,22 +103,38 @@ public class Board : MonoBehaviour
         {
             DestroyMatchesAt(i, j);
         });
+        StartCoroutine(DecreaseRowCoroutine());
     }
 
     private IEnumerator DecreaseRowCoroutine()
     {
         int nullCount = 0;
+        doForEveryDot((i, j) => {
+            var dot = allDotsOnBoard[i, j];
+            if (dot == null)
+            {
+                nullCount++;
+            }
+            else if (nullCount > 0)
+            {
+                dot.GetComponent<Dot>().row -= nullCount;
+                dot = null;
+            }
+        }, afterEachColumnAction: () => {
+            nullCount = 0;
+        });
         yield return new WaitForSeconds(0.4f);
     }
 
-    private void doForEveryDot(Action<int, int> action)
+    private void doForEveryDot(Action<int, int> mainAction, Action afterEachColumnAction = null)
     {
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
             {
-                action.Invoke(i, j);
+                mainAction.Invoke(i, j);
             }
+            afterEachColumnAction?.Invoke();
         }
     }
 }
