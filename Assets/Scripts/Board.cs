@@ -89,11 +89,10 @@ public class Board : MonoBehaviour
 
     private void DestroyMatchesAt(int column, int row)
     {
-        var dot = allDotsOnBoard[column, row];
-        if (dot != null && dot.GetComponent<Dot>().isMatched)
+        if (allDotsOnBoard[column, row] != null && allDotsOnBoard[column, row].GetComponent<Dot>().isMatched)
         {
-            Destroy(dot);
-            dot = null;
+            Destroy(allDotsOnBoard[column, row]);
+            allDotsOnBoard[column, row] = null;
         }
     }
 
@@ -110,15 +109,14 @@ public class Board : MonoBehaviour
     {
         int nullCount = 0;
         doForEveryDot((i, j) => {
-            var dot = allDotsOnBoard[i, j];
-            if (dot == null)
+            if (allDotsOnBoard[i, j] == null)
             {
                 nullCount++;
             }
             else if (nullCount > 0)
             {
-                dot.GetComponent<Dot>().row -= nullCount;
-                dot = null;
+                allDotsOnBoard[i, j].GetComponent<Dot>().row -= nullCount;
+                allDotsOnBoard[i, j] = null;
             }
         }, afterEachColumnAction: () => {
             nullCount = 0;
@@ -142,13 +140,12 @@ public class Board : MonoBehaviour
     private void RefillBoard()
     {
         doForEveryDot((i, j) => {
-            var dotAtCoordinates = allDotsOnBoard[i, j];
-            if (dotAtCoordinates == null)
+            if (allDotsOnBoard[i, j] == null)
             {
                 var tempPosition = new Vector2(i, j);
                 var dotToUse = Random.Range(0, availableDotTypes.Length);
                 var gameObject = Instantiate(availableDotTypes[dotToUse], tempPosition, Quaternion.identity);
-                dotAtCoordinates = gameObject;
+                allDotsOnBoard[i, j] = gameObject;
             }
         });
     }
@@ -157,8 +154,7 @@ public class Board : MonoBehaviour
     {
         var areAnyMatchesOnBoard = false;
         doForEveryDot((i, j) => {
-            var dotAtCoordinates = allDotsOnBoard[i, j];
-            if (dotAtCoordinates != null && dotAtCoordinates.GetComponent<Dot>().isMatched)
+            if (allDotsOnBoard[i, j] != null && allDotsOnBoard[i, j].GetComponent<Dot>().isMatched)
             {
                 areAnyMatchesOnBoard = true;
             }
