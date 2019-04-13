@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Puzzle_Quest_3.Assets.Scripts.Extensions;
 using UnityEngine;
@@ -32,17 +33,24 @@ public class FindMatches : MonoBehaviour
                     var leftDot = board.allDotsOnBoard[c - 1, r];
                     var rightDot = board.allDotsOnBoard[c + 1, r];
 
-                    if (dot.GetComponent<Dot>().dotType == DotType.RowBomb
-                        || leftDot.GetComponent<Dot>().dotType == DotType.RowBomb
-                        || rightDot.GetComponent<Dot>().dotType == DotType.RowBomb)
-                    {
-                        var rowDots = GetDotsForRow(r);
-                        rowDots.ForEach(rowDot => {
-                            rowDot.GetComponent<Dot>().isMatched = true;
-                        });
-                        currentMatches.Union(rowDots);
-                    }
+                    if (dot == null || dot.GetComponent<Dot>() == null) throw new Exception($"{dot == null}, {dot.GetComponent<Dot>() == null}");
 
+                    if (isAnyDotOfType(DotType.RowBomb, dot, leftDot, rightDot))
+                    {
+                        currentMatches.Union(GetDotsForRowAndSetMatched(r));
+                    }
+                    if (isAnyDotOfType(DotType.ColumnBomb, dot))
+                    {
+                        currentMatches.Union(GetDotsForColumnAndSetMatched(c));
+                    }
+                    if (isAnyDotOfType(DotType.ColumnBomb, leftDot))
+                    {
+                        currentMatches.Union(GetDotsForColumnAndSetMatched(c-1));
+                    }
+                    if (isAnyDotOfType(DotType.ColumnBomb, rightDot))
+                    {
+                        currentMatches.Union(GetDotsForColumnAndSetMatched(c+1));
+                    }
                     if (leftDot != null && rightDot != null && leftDot.tag == dot.tag && rightDot.tag == dot.tag)
                     {
                         if (!currentMatches.Contains(leftDot))
@@ -66,6 +74,23 @@ public class FindMatches : MonoBehaviour
                 {
                     var upDot = board.allDotsOnBoard[c, r + 1];
                     var downDot = board.allDotsOnBoard[c, r - 1];
+
+                    if (isAnyDotOfType(DotType.ColumnBomb, dot, upDot, downDot))
+                    {
+                        currentMatches.Union(GetDotsForColumnAndSetMatched(c));
+                    }
+                    if (isAnyDotOfType(DotType.RowBomb, dot))
+                    {
+                        currentMatches.Union(GetDotsForRowAndSetMatched(r));
+                    }
+                    if (isAnyDotOfType(DotType.RowBomb, upDot))
+                    {
+                        currentMatches.Union(GetDotsForRowAndSetMatched(r+1));
+                    }
+                    if (isAnyDotOfType(DotType.RowBomb, downDot))
+                    {
+                        currentMatches.Union(GetDotsForRowAndSetMatched(r-1));
+                    }
                     if (upDot != null && downDot != null && upDot.tag == dot.tag && downDot.tag == dot.tag)
                     {
                         if (!currentMatches.Contains(upDot))
@@ -89,27 +114,36 @@ public class FindMatches : MonoBehaviour
         });
     }
 
-    List<GameObject> GetDotsForColumn(int column)
+    private List<GameObject> GetDotsForColumnAndSetMatched(int column)
     {
         var dots = new List<GameObject>();
-        board.doForColumn(column, (c, r) => {
+        board.doForColumn(column, (c, r) =>
+        {
             if (board.allDotsOnBoard[c, r] != null)
             {
+                board.allDotsOnBoard[c, r].GetComponent<Dot>().isMatched = true;
                 dots.Add(board.allDotsOnBoard[c, r]);
             }
         });
         return dots;
     }
 
-    List<GameObject> GetDotsForRow(int row)
+    private List<GameObject> GetDotsForRowAndSetMatched(int row)
     {
         var dots = new List<GameObject>();
-        board.doForRow(row, (c, r) => {
+        board.doForRow(row, (c, r) =>
+        {
             if (board.allDotsOnBoard[c, r] != null)
             {
+                board.allDotsOnBoard[c, r].GetComponent<Dot>().isMatched = true;
                 dots.Add(board.allDotsOnBoard[c, r]);
             }
         });
         return dots;
+    }
+
+    private bool isAnyDotOfType(DotType dotType, params GameObject[] dots)
+    {
+        return dots.Any(x => x.GetComponent<Dot>().dotType == dotType);
     }
 }

@@ -230,8 +230,8 @@ public class Dot : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            dotType = DotType.RowBomb;
-            Instantiate(rowArrow, transform.position, Quaternion.identity).Also(arrow => {
+            dotType = DotType.ColumnBomb;
+            Instantiate(columnArrow, transform.position, Quaternion.identity).Also(arrow => {
                 arrow.transform.parent = transform;
             });
         }
