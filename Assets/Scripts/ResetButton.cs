@@ -9,7 +9,7 @@ public class ResetButton : MonoBehaviour
     {
         FindObjectOfType<Board>()?.Also(board => {
             board.doForEveryDot((c, r) => {
-                board.allDotsOnBoard[c, r].GetComponent<Dot>().isMatched = true;
+                board.allDotsOnBoard[c, r]?.GetComponent<Dot>()?.Also(dot => dot.isMatched = true);
             });
             board.DestroyAllMatches();
         });
