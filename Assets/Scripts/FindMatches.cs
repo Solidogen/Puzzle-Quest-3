@@ -146,4 +146,27 @@ public class FindMatches : MonoBehaviour
     {
         return dots.Any(x => x.GetComponent<Dot>().dotType == dotType);
     }
+
+    public void CheckBombs()
+    {
+        if (board.currentDot == null)
+        {
+            return;
+        }
+        if (board.currentDot.isMatched)
+        {
+            // unmatch and swap for a bomb
+            board.currentDot.isMatched = false;
+            board.currentDot.MakeBomb(DotTypeHelpers.getRandomBomb());
+        }
+        else if (board.currentDot.otherDot != null)
+        {
+            var otherDot = board.currentDot.otherDot.GetComponent<Dot>();
+            if (otherDot.isMatched)
+            {
+                otherDot.isMatched = false;
+                otherDot.MakeBomb(DotTypeHelpers.getRandomBomb());
+            }
+        }
+    }
 }

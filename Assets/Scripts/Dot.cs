@@ -25,7 +25,7 @@ public class Dot : MonoBehaviour
 
     private FindMatches findMatches;
     private Board board;
-    private GameObject otherDot;
+    public GameObject otherDot;
     private Vector2 firstTouchPosition;
     private Vector2 finalTouchPosition;
     private Vector2 tempPosition;
@@ -38,11 +38,11 @@ public class Dot : MonoBehaviour
 
     void Update()
     {
-        if (isMatched)
-        {
-            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-            sprite.color = new Color(1f, 1f, 1f, .2f);
-        }
+        // if (isMatched)
+        // {
+        //     SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        //     sprite.color = new Color(1f, 1f, 1f, .2f);
+        // }
         targetX = column;
         targetY = row;
         // X
@@ -95,13 +95,14 @@ public class Dot : MonoBehaviour
                 row = previousRow;
                 column = previousColumn;
                 yield return new WaitForSeconds(0.5f);
+                board.currentDot = null;
                 board.currentState = GameState.Move;
             }
             else
             {
                 board.DestroyAllMatches();
             }
-            otherDot = null;
+            //otherDot = null;
         }
     }
 
@@ -134,12 +135,13 @@ public class Dot : MonoBehaviour
         radianAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
         CheckAngle();
         board.currentState = GameState.Wait;
+        board.currentDot = this;
     }
 
     private void CheckAngle()
     {
-        SwipeHelpers.getSwipeAngleFromRadian(radianAngle).Also(angle => {
-            Debug.Log($"Swipex {angle}");
+        SwipeHelpers.getSwipeAngleFromRadian(radianAngle).Also(angle =>
+        {
             SwapGemIfPossible(angle);
         });
     }
@@ -225,15 +227,24 @@ public class Dot : MonoBehaviour
         }
     }
 
-    // testing only
-    private void OnMouseOver()
+    public void MakeBomb(DotType type)
     {
-        if (Input.GetMouseButtonDown(1))
+        dotType = type;
+        GameObject bombToInstantiate = null;
+        switch (dotType)
         {
-            dotType = DotType.ColumnBomb;
-            Instantiate(columnArrow, transform.position, Quaternion.identity).Also(arrow => {
-                arrow.transform.parent = transform;
-            });
+            case DotType.ColumnBomb:
+                bombToInstantiate = columnArrow;
+                break;
+            case DotType.RowBomb:
+                bombToInstantiate = rowArrow;
+                break;
+            default:
+                throw new InvalidOperationException("Bomb type not handled");
         }
+        Instantiate(bombToInstantiate, transform.position, Quaternion.identity).Also(arrow =>
+        {
+            arrow.transform.parent = transform;
+        });
     }
 }
