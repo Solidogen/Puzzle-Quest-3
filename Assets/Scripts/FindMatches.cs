@@ -53,21 +53,9 @@ public class FindMatches : MonoBehaviour
                         }
                         if (leftDot != null && rightDot != null && leftDot.tag == dot.tag && rightDot.tag == dot.tag)
                         {
-                            if (!currentMatches.Contains(leftDot))
-                            {
-                                currentMatches.Add(leftDot);
-                            }
-                            if (!currentMatches.Contains(rightDot))
-                            {
-                                currentMatches.Add(rightDot);
-                            }
-                            if (!currentMatches.Contains(dot))
-                            {
-                                currentMatches.Add(dot);
-                            }
-                            leftDot.GetComponent<Dot>().isMatched = true;
-                            rightDot.GetComponent<Dot>().isMatched = true;
-                            dot.GetComponent<Dot>().isMatched = true;
+                            AddToListAndMatch(dot);
+                            AddToListAndMatch(leftDot);
+                            AddToListAndMatch(rightDot);
                         }
                     }
                 }
@@ -96,21 +84,9 @@ public class FindMatches : MonoBehaviour
                         }
                         if (upDot != null && downDot != null && upDot.tag == dot.tag && downDot.tag == dot.tag)
                         {
-                            if (!currentMatches.Contains(upDot))
-                            {
-                                currentMatches.Add(upDot);
-                            }
-                            if (!currentMatches.Contains(downDot))
-                            {
-                                currentMatches.Add(downDot);
-                            }
-                            if (!currentMatches.Contains(dot))
-                            {
-                                currentMatches.Add(dot);
-                            }
-                            upDot.GetComponent<Dot>().isMatched = true;
-                            downDot.GetComponent<Dot>().isMatched = true;
-                            dot.GetComponent<Dot>().isMatched = true;
+                            AddToListAndMatch(dot);
+                            AddToListAndMatch(upDot);
+                            AddToListAndMatch(downDot);
                         }
                     }
                 }
@@ -183,5 +159,13 @@ public class FindMatches : MonoBehaviour
                 board.allDotsOnBoard[c, r].GetComponent<Dot>().isMatched = true;
             }
         });
+    }
+
+    private void AddToListAndMatch(GameObject dot){
+        if (!currentMatches.Contains(dot))
+        {
+            currentMatches.Add(dot);
+        }
+        dot.GetComponent<Dot>().isMatched = true;
     }
 }
