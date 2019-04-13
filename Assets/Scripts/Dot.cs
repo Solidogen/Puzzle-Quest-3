@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Puzzle_Quest_3.Assets.Scripts.Extensions;
 using UnityEngine;
 
 public class Dot : MonoBehaviour
@@ -126,9 +127,10 @@ public class Dot : MonoBehaviour
 
     private void CheckAngle()
     {
-        var swipeAngle = SwipeHelpers.getSwipeAngleFromRadian(radianAngle);
-        Debug.Log($"Swipe {swipeAngle}");
-        SwapGemIfPossible(swipeAngle);
+        SwipeHelpers.getSwipeAngleFromRadian(radianAngle).Also(angle => {
+            Debug.Log($"Swipex {angle}");
+            SwapGemIfPossible(angle);
+        });
     }
 
     private void SwapGemIfPossible(SwipeAngle swipeAngle)
