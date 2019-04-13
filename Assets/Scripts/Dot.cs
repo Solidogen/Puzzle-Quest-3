@@ -14,13 +14,21 @@ public class Dot : MonoBehaviour
     public int targetX;
     public int targetY;
     public bool isMatched = false;
+
+    [Header("Swipe Variables")]
+    public float radianAngle = 0;
+
+    [Header("Powerup Variables")]
+    public DotType dotType = DotType.Normal;
+    public GameObject columnArrow;
+    public GameObject rowArrow;
+
     private FindMatches findMatches;
     private Board board;
     private GameObject otherDot;
     private Vector2 firstTouchPosition;
     private Vector2 finalTouchPosition;
     private Vector2 tempPosition;
-    public float radianAngle = 0;
 
     void Start()
     {
@@ -214,6 +222,18 @@ public class Dot : MonoBehaviour
                     downDot1.GetComponent<Dot>().isMatched = true;
                 }
             }
+        }
+    }
+
+    // testing only
+    private void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            dotType = DotType.RowBomb;
+            Instantiate(rowArrow, transform.position, Quaternion.identity).Also(arrow => {
+                arrow.transform.parent = transform;
+            });
         }
     }
 }

@@ -170,6 +170,8 @@ MonoBehaviour:
   - {fileID: 6497786279101397246, guid: 2552123666e8c4840b2ad5455d8a4b13, type: 3}
   - {fileID: 8244336297771335656, guid: 1839aa5dd6ea127439bd4476635bd6fc, type: 3}
   - {fileID: 4896424776957117767, guid: 9a08dd02eb26d144e81f03e9a6d5bdd3, type: 3}
+  destroyEffect: {fileID: 7762475388500705397, guid: 70d317922f7d80d409c03464e7d4bac0,
+    type: 3}
 --- !u!1 &1209950998
 GameObject:
   m_ObjectHideFlags: 0

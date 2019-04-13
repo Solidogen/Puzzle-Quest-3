@@ -27,18 +27,18 @@ public class Board : MonoBehaviour
 
     private void Setup()
     {
-        this.doForEveryDot((i, j) =>
+        this.doForEveryDot((c, r) =>
         {
-            var cellName = $"( {i}, {j} )";
+            var cellName = $"( {c}, {r} )";
 
-            var tempPosition = new Vector2(i, j + offset);
+            var tempPosition = new Vector2(c, r + offset);
             var backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
             backgroundTile.name = "bg";
 
             int dotToUse = Random.Range(0, availableDotTypes.Length);
 
             int maxIterations = 0;
-            while (MatchesAt(i, j, availableDotTypes[dotToUse]) && maxIterations < 100)
+            while (MatchesAt(c, r, availableDotTypes[dotToUse]) && maxIterations < 100)
             {
                 dotToUse = Random.Range(0, availableDotTypes.Length);
                 maxIterations++;
@@ -46,13 +46,13 @@ public class Board : MonoBehaviour
             }
 
             GameObject dot = Instantiate(availableDotTypes[dotToUse], tempPosition, Quaternion.identity);
-            dot.GetComponent<Dot>().row = j;
-            dot.GetComponent<Dot>().column = i;
+            dot.GetComponent<Dot>().row = r;
+            dot.GetComponent<Dot>().column = c;
             dot.transform.parent = transform;
             dot.name = "dot" + cellName;
             backgroundTile.transform.parent = dot.transform;
 
-            allDotsOnBoard[i, j] = dot;
+            allDotsOnBoard[c, r] = dot;
         });
     }
 
@@ -108,9 +108,9 @@ public class Board : MonoBehaviour
 
     public void DestroyAllMatches()
     {
-        this.doForEveryDot((i, j) =>
+        this.doForEveryDot((c, r) =>
         {
-            DestroyMatchesAt(i, j);
+            DestroyMatchesAt(c, r);
         });
         StartCoroutine(DecreaseRowCoroutine());
     }
@@ -118,15 +118,15 @@ public class Board : MonoBehaviour
     private IEnumerator DecreaseRowCoroutine()
     {
         int nullCount = 0;
-        this.doForEveryDot((i, j) => {
-            if (allDotsOnBoard[i, j] == null)
+        this.doForEveryDot((c, r) => {
+            if (allDotsOnBoard[c, r] == null)
             {
                 nullCount++;
             }
             else if (nullCount > 0)
             {
-                allDotsOnBoard[i, j].GetComponent<Dot>().row -= nullCount;
-                allDotsOnBoard[i, j] = null;
+                allDotsOnBoard[c, r].GetComponent<Dot>().row -= nullCount;
+                allDotsOnBoard[c, r] = null;
             }
         }, afterEachColumnAction: () => {
             nullCount = 0;
@@ -137,15 +137,15 @@ public class Board : MonoBehaviour
 
     private void RefillBoard()
     {
-        this.doForEveryDot((i, j) => {
-            if (allDotsOnBoard[i, j] == null)
+        this.doForEveryDot((c, r) => {
+            if (allDotsOnBoard[c, r] == null)
             {
-                var tempPosition = new Vector2(i, j + offset);
+                var tempPosition = new Vector2(c, r + offset);
                 var dotToUse = Random.Range(0, availableDotTypes.Length);
                 var gameObject = Instantiate(availableDotTypes[dotToUse], tempPosition, Quaternion.identity);
-                allDotsOnBoard[i, j] = gameObject;
-                gameObject.GetComponent<Dot>().column = i;
-                gameObject.GetComponent<Dot>().row = j;
+                allDotsOnBoard[c, r] = gameObject;
+                gameObject.GetComponent<Dot>().column = c;
+                gameObject.GetComponent<Dot>().row = r;
             }
         });
     }
@@ -153,8 +153,8 @@ public class Board : MonoBehaviour
     private bool AreAnyMatchesOnBoard()
     {
         var areAnyMatchesOnBoard = false;
-        this.doForEveryDot((i, j) => {
-            if (allDotsOnBoard[i, j] != null && allDotsOnBoard[i, j].GetComponent<Dot>().isMatched)
+        this.doForEveryDot((c, r) => {
+            if (allDotsOnBoard[c, r] != null && allDotsOnBoard[c, r].GetComponent<Dot>().isMatched)
             {
                 areAnyMatchesOnBoard = true;
             }

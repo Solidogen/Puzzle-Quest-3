@@ -95,10 +95,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   column: 0
   row: 0
+  previousColumn: 0
+  previousRow: 0
   targetX: 0
   targetY: 0
   isMatched: 0
   radianAngle: 0
+  dotType: 0
+  columnArrow: {fileID: 8590658647419626152, guid: bec6af35eea8448498f9a525d7d2e3a2,
+    type: 3}
+  rowArrow: {fileID: 2171752145102463879, guid: 8cfb47e28a403244884b3159f6da69d2,
+    type: 3}
 --- !u!58 &1852427022850393253
 CircleCollider2D:
   m_ObjectHideFlags: 0
