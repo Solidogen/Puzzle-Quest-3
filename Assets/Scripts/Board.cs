@@ -43,7 +43,6 @@ public class Board : MonoBehaviour
             {
                 dotToUse = Random.Range(0, availableDotColors.Length);
                 maxIterations++;
-                Debug.Log(maxIterations);
             }
 
             GameObject dot = Instantiate(availableDotColors[dotToUse], tempPosition, Quaternion.identity);
@@ -105,7 +104,6 @@ public class Board : MonoBehaviour
                 findMatches.CheckBombs();
             }
 
-            findMatches.currentMatches.Remove(allDotsOnBoard[column, row]);
             GameObject particle = Instantiate(destroyEffect, allDotsOnBoard[column, row].transform.position, Quaternion.identity);
             Destroy(particle, 0.5f);
             Destroy(allDotsOnBoard[column, row]);
@@ -119,6 +117,7 @@ public class Board : MonoBehaviour
         {
             DestroyMatchesAt(c, r);
         });
+        findMatches.currentMatches.Clear();
         StartCoroutine(DecreaseRowCoroutine());
     }
 

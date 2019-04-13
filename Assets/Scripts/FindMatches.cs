@@ -33,41 +33,42 @@ public class FindMatches : MonoBehaviour
                     var leftDot = board.allDotsOnBoard[c - 1, r];
                     var rightDot = board.allDotsOnBoard[c + 1, r];
 
-                    if (dot == null || dot.GetComponent<Dot>() == null) throw new Exception($"{dot == null}, {dot.GetComponent<Dot>() == null}");
-
-                    if (isAnyDotOfType(DotType.RowBomb, dot, leftDot, rightDot))
+                    if (leftDot != null && rightDot != null)
                     {
-                        currentMatches.Union(GetDotsForRowAndSetMatched(r));
-                    }
-                    if (isAnyDotOfType(DotType.ColumnBomb, dot))
-                    {
-                        currentMatches.Union(GetDotsForColumnAndSetMatched(c));
-                    }
-                    if (isAnyDotOfType(DotType.ColumnBomb, leftDot))
-                    {
-                        currentMatches.Union(GetDotsForColumnAndSetMatched(c-1));
-                    }
-                    if (isAnyDotOfType(DotType.ColumnBomb, rightDot))
-                    {
-                        currentMatches.Union(GetDotsForColumnAndSetMatched(c+1));
-                    }
-                    if (leftDot != null && rightDot != null && leftDot.tag == dot.tag && rightDot.tag == dot.tag)
-                    {
-                        if (!currentMatches.Contains(leftDot))
+                        if (isAnyDotOfType(DotType.RowBomb, dot, leftDot, rightDot))
                         {
-                            currentMatches.Add(leftDot);
+                            currentMatches.Union(GetDotsForRowAndSetMatched(r));
                         }
-                        if (!currentMatches.Contains(rightDot))
+                        if (isAnyDotOfType(DotType.ColumnBomb, dot))
                         {
-                            currentMatches.Add(rightDot);
+                            currentMatches.Union(GetDotsForColumnAndSetMatched(c));
                         }
-                        if (!currentMatches.Contains(dot))
+                        if (isAnyDotOfType(DotType.ColumnBomb, leftDot))
                         {
-                            currentMatches.Add(dot);
+                            currentMatches.Union(GetDotsForColumnAndSetMatched(c - 1));
                         }
-                        leftDot.GetComponent<Dot>().isMatched = true;
-                        rightDot.GetComponent<Dot>().isMatched = true;
-                        dot.GetComponent<Dot>().isMatched = true;
+                        if (isAnyDotOfType(DotType.ColumnBomb, rightDot))
+                        {
+                            currentMatches.Union(GetDotsForColumnAndSetMatched(c + 1));
+                        }
+                        if (leftDot != null && rightDot != null && leftDot.tag == dot.tag && rightDot.tag == dot.tag)
+                        {
+                            if (!currentMatches.Contains(leftDot))
+                            {
+                                currentMatches.Add(leftDot);
+                            }
+                            if (!currentMatches.Contains(rightDot))
+                            {
+                                currentMatches.Add(rightDot);
+                            }
+                            if (!currentMatches.Contains(dot))
+                            {
+                                currentMatches.Add(dot);
+                            }
+                            leftDot.GetComponent<Dot>().isMatched = true;
+                            rightDot.GetComponent<Dot>().isMatched = true;
+                            dot.GetComponent<Dot>().isMatched = true;
+                        }
                     }
                 }
                 if (r > 0 && r < board.height - 1)
@@ -75,39 +76,42 @@ public class FindMatches : MonoBehaviour
                     var upDot = board.allDotsOnBoard[c, r + 1];
                     var downDot = board.allDotsOnBoard[c, r - 1];
 
-                    if (isAnyDotOfType(DotType.ColumnBomb, dot, upDot, downDot))
+                    if (upDot != null && downDot != null)
                     {
-                        currentMatches.Union(GetDotsForColumnAndSetMatched(c));
-                    }
-                    if (isAnyDotOfType(DotType.RowBomb, dot))
-                    {
-                        currentMatches.Union(GetDotsForRowAndSetMatched(r));
-                    }
-                    if (isAnyDotOfType(DotType.RowBomb, upDot))
-                    {
-                        currentMatches.Union(GetDotsForRowAndSetMatched(r+1));
-                    }
-                    if (isAnyDotOfType(DotType.RowBomb, downDot))
-                    {
-                        currentMatches.Union(GetDotsForRowAndSetMatched(r-1));
-                    }
-                    if (upDot != null && downDot != null && upDot.tag == dot.tag && downDot.tag == dot.tag)
-                    {
-                        if (!currentMatches.Contains(upDot))
+                        if (isAnyDotOfType(DotType.ColumnBomb, dot, upDot, downDot))
                         {
-                            currentMatches.Add(upDot);
+                            currentMatches.Union(GetDotsForColumnAndSetMatched(c));
                         }
-                        if (!currentMatches.Contains(downDot))
+                        if (isAnyDotOfType(DotType.RowBomb, dot))
                         {
-                            currentMatches.Add(downDot);
+                            currentMatches.Union(GetDotsForRowAndSetMatched(r));
                         }
-                        if (!currentMatches.Contains(dot))
+                        if (isAnyDotOfType(DotType.RowBomb, upDot))
                         {
-                            currentMatches.Add(dot);
+                            currentMatches.Union(GetDotsForRowAndSetMatched(r + 1));
                         }
-                        upDot.GetComponent<Dot>().isMatched = true;
-                        downDot.GetComponent<Dot>().isMatched = true;
-                        dot.GetComponent<Dot>().isMatched = true;
+                        if (isAnyDotOfType(DotType.RowBomb, downDot))
+                        {
+                            currentMatches.Union(GetDotsForRowAndSetMatched(r - 1));
+                        }
+                        if (upDot != null && downDot != null && upDot.tag == dot.tag && downDot.tag == dot.tag)
+                        {
+                            if (!currentMatches.Contains(upDot))
+                            {
+                                currentMatches.Add(upDot);
+                            }
+                            if (!currentMatches.Contains(downDot))
+                            {
+                                currentMatches.Add(downDot);
+                            }
+                            if (!currentMatches.Contains(dot))
+                            {
+                                currentMatches.Add(dot);
+                            }
+                            upDot.GetComponent<Dot>().isMatched = true;
+                            downDot.GetComponent<Dot>().isMatched = true;
+                            dot.GetComponent<Dot>().isMatched = true;
+                        }
                     }
                 }
             });
@@ -172,7 +176,8 @@ public class FindMatches : MonoBehaviour
 
     public void MatchDotsOfColor(string color)
     {
-        board.doForEveryDot((c, r) => {
+        board.doForEveryDot((c, r) =>
+        {
             if (board.allDotsOnBoard[c, r] != null && board.allDotsOnBoard[c, r].tag == color)
             {
                 board.allDotsOnBoard[c, r].GetComponent<Dot>().isMatched = true;
