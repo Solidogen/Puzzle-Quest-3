@@ -157,7 +157,7 @@ public class FindMatches : MonoBehaviour
         {
             // unmatch and swap for a bomb
             board.currentDot.isMatched = false;
-            board.currentDot.MakeBomb(DotTypeHelpers.getRandomBomb());
+            board.currentDot.MakeBomb(DotTypeHelpers.GetRandomDirectionBomb());
         }
         else if (board.currentDot.otherDot != null)
         {
@@ -165,8 +165,18 @@ public class FindMatches : MonoBehaviour
             if (otherDot.isMatched)
             {
                 otherDot.isMatched = false;
-                otherDot.MakeBomb(DotTypeHelpers.getRandomBomb());
+                otherDot.MakeBomb(DotTypeHelpers.GetRandomDirectionBomb());
             }
         }
+    }
+
+    public void MatchDotsOfColor(string color)
+    {
+        board.doForEveryDot((c, r) => {
+            if (board.allDotsOnBoard[c, r] != null && board.allDotsOnBoard[c, r].tag == color)
+            {
+                board.allDotsOnBoard[c, r].GetComponent<Dot>().isMatched = true;
+            }
+        });
     }
 }

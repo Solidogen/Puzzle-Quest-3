@@ -12,7 +12,7 @@ public class Board : MonoBehaviour
     public int height;
     public int offset;
     public GameObject tilePrefab;
-    public GameObject[] availableDotTypes;
+    public GameObject[] availableDotColors;
     public GameObject[,] allDotsOnBoard;
     private BackgroundTile[,] allBackgroundTiles;
     public GameObject destroyEffect;
@@ -36,17 +36,17 @@ public class Board : MonoBehaviour
             var backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
             backgroundTile.name = "bg";
 
-            int dotToUse = Random.Range(0, availableDotTypes.Length);
+            int dotToUse = Random.Range(0, availableDotColors.Length);
 
             int maxIterations = 0;
-            while (MatchesAt(c, r, availableDotTypes[dotToUse]) && maxIterations < 100)
+            while (MatchesAt(c, r, availableDotColors[dotToUse]) && maxIterations < 100)
             {
-                dotToUse = Random.Range(0, availableDotTypes.Length);
+                dotToUse = Random.Range(0, availableDotColors.Length);
                 maxIterations++;
                 Debug.Log(maxIterations);
             }
 
-            GameObject dot = Instantiate(availableDotTypes[dotToUse], tempPosition, Quaternion.identity);
+            GameObject dot = Instantiate(availableDotColors[dotToUse], tempPosition, Quaternion.identity);
             dot.GetComponent<Dot>().row = r;
             dot.GetComponent<Dot>().column = c;
             dot.transform.parent = transform;
@@ -148,8 +148,8 @@ public class Board : MonoBehaviour
             if (allDotsOnBoard[c, r] == null)
             {
                 var tempPosition = new Vector2(c, r + offset);
-                var dotToUse = Random.Range(0, availableDotTypes.Length);
-                var gameObject = Instantiate(availableDotTypes[dotToUse], tempPosition, Quaternion.identity);
+                var dotToUse = Random.Range(0, availableDotColors.Length);
+                var gameObject = Instantiate(availableDotColors[dotToUse], tempPosition, Quaternion.identity);
                 allDotsOnBoard[c, r] = gameObject;
                 gameObject.GetComponent<Dot>().column = c;
                 gameObject.GetComponent<Dot>().row = r;

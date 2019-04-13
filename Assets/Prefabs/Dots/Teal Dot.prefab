@@ -106,6 +106,9 @@ MonoBehaviour:
     type: 3}
   rowArrow: {fileID: 2171752145102463879, guid: 8cfb47e28a403244884b3159f6da69d2,
     type: 3}
+  colorBomb: {fileID: 7629977092595768825, guid: 80707192dcf41954e81784812d933df5,
+    type: 3}
+  otherDot: {fileID: 0}
 --- !u!58 &7210429683672835591
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -22,6 +22,7 @@ public class Dot : MonoBehaviour
     public DotType dotType = DotType.Normal;
     public GameObject columnArrow;
     public GameObject rowArrow;
+    public GameObject colorBomb;
 
     private FindMatches findMatches;
     private Board board;
@@ -84,6 +85,18 @@ public class Dot : MonoBehaviour
 
     public IEnumerator CheckMoveCoroutine()
     {
+        if (dotType == DotType.ColorBomb)
+        {
+            //this dot is a color bomb, the other piece is the color to destroy
+            findMatches.MatchDotsOfColor(otherDot.tag);
+            isMatched = true;
+        }
+        else if (otherDot.GetComponent<Dot>().dotType == DotType.ColorBomb)
+        {
+            //other dot is a color bomb, this dot is the color to destroy
+            findMatches.MatchDotsOfColor(gameObject.tag);
+            otherDot.GetComponent<Dot>().isMatched = true;
+        }
         yield return new WaitForSeconds(0.3f);
         if (otherDot != null)
         {
@@ -102,7 +115,6 @@ public class Dot : MonoBehaviour
             {
                 board.DestroyAllMatches();
             }
-            //otherDot = null;
         }
     }
 
@@ -246,5 +258,17 @@ public class Dot : MonoBehaviour
         {
             arrow.transform.parent = transform;
         });
+    }
+
+    // debug
+    private void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            dotType = DotType.ColorBomb;
+            Instantiate(colorBomb, transform.position, Quaternion.identity).Also(bomb => {
+                bomb.transform.parent = transform;
+            });
+        }
     }
 }
