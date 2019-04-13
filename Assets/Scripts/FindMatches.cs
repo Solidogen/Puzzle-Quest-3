@@ -109,7 +109,7 @@ public class FindMatches : MonoBehaviour
         return dots;
     }
 
-    public void CheckBombs()
+    public void CheckDirectionalBombs()
     {
         if (board.currentDot == null)
         {
@@ -118,14 +118,14 @@ public class FindMatches : MonoBehaviour
         if (board.currentDot.isMatched)
         {
             // unmatch and swap for a bomb
-            board.currentDot.MakeBomb(DotTypeHelpers.GetRandomDirectionBomb());
+            board.currentDot.MakeBomb(DotTypeHelpers.GetRandomDirectionalBomb());
         }
         else if (board.currentDot.otherDot != null)
         {
             var otherDot = board.currentDot.otherDot.GetComponent<Dot>();
             if (otherDot.isMatched)
             {
-                otherDot.MakeBomb(DotTypeHelpers.GetRandomDirectionBomb());
+                otherDot.MakeBomb(DotTypeHelpers.GetRandomDirectionalBomb());
             }
         }
     }

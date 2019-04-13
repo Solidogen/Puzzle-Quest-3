@@ -242,6 +242,10 @@ public class Dot : MonoBehaviour
 
     public void MakeBomb(DotType type)
     {
+        if (dotType == type)
+        {
+            return;
+        }
         isMatched = false;
         dotType = type;
         GameObject bombToInstantiate = null;
@@ -252,6 +256,12 @@ public class Dot : MonoBehaviour
                 break;
             case DotType.RowBomb:
                 bombToInstantiate = rowBomb;
+                break;
+            case DotType.ColorBomb:
+                bombToInstantiate = colorBomb;
+                break;
+            case DotType.AdjacentBomb:
+                bombToInstantiate = adjacentBomb;
                 break;
             default:
                 throw new InvalidOperationException("Bomb type not handled");

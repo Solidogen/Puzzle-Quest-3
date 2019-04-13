@@ -12,7 +12,7 @@ public enum DotType
 }
 
 public class DotTypeHelpers {
-    public static DotType GetRandomDirectionBomb()
+    public static DotType GetRandomDirectionalBomb()
     {
         var bombs = new List<DotType>() {DotType.RowBomb, DotType.ColumnBomb};
         return bombs[Random.Range(0, bombs.Count)];

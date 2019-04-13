@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Puzzle_Quest_3.Assets.Scripts.Extensions;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -94,23 +95,6 @@ public class Board : MonoBehaviour
         return false;
     }
 
-    private void DestroyMatchesAt(int column, int row)
-    {
-        if (allDotsOnBoard[column, row] != null && allDotsOnBoard[column, row].GetComponent<Dot>().isMatched)
-        {
-            // how many elements are in the matched pieces list?
-            if (findMatches.currentMatches.Count == 4 || findMatches.currentMatches.Count == 7)
-            {
-                findMatches.CheckBombs();
-            }
-
-            GameObject particle = Instantiate(destroyEffect, allDotsOnBoard[column, row].transform.position, Quaternion.identity);
-            Destroy(particle, 0.5f);
-            Destroy(allDotsOnBoard[column, row]);
-            allDotsOnBoard[column, row] = null;
-        }
-    }
-
     public void DestroyAllMatches()
     {
         this.doForEveryDot((c, r) =>
@@ -121,10 +105,90 @@ public class Board : MonoBehaviour
         StartCoroutine(DecreaseRowCoroutine());
     }
 
+    private void DestroyMatchesAt(int column, int row)
+    {
+        if (allDotsOnBoard[column, row] != null && allDotsOnBoard[column, row].GetComponent<Dot>().isMatched)
+        {
+            // how many elements are in the matched pieces list?
+            if (findMatches.currentMatches.Count > 3)
+            {
+                findMatches.CheckDirectionalBombs();
+            }
+
+            GameObject particle = Instantiate(destroyEffect, allDotsOnBoard[column, row].transform.position, Quaternion.identity);
+            Destroy(particle, 0.5f);
+            Destroy(allDotsOnBoard[column, row]);
+            allDotsOnBoard[column, row] = null;
+        }
+    }
+
+    private void CheckIfNeedToMakeBombs()
+    {
+        if (findMatches.currentMatches.Count == 4 || findMatches.currentMatches.Count == 7)
+        {
+            findMatches.CheckDirectionalBombs();
+        }
+        if (findMatches.currentMatches.Count == 5 || findMatches.currentMatches.Count == 8)
+        {
+            if (IsFiveOfAKindInStraightLine())
+            {
+                MakeOneOfSwappedDotsABomb(currentDot, DotType.ColorBomb);
+            }
+            else
+            {
+                MakeOneOfSwappedDotsABomb(currentDot, DotType.AdjacentBomb);
+            }
+        }
+    }
+
+    private void MakeOneOfSwappedDotsABomb(Dot currentDot, DotType bombType)
+    {
+        currentDot?.Also(dot =>
+        {
+            if (dot.isMatched)
+            {
+                dot.MakeBomb(bombType);
+            }
+            else
+            {
+                currentDot.otherDot?.GetComponent<Dot>()?.Also(other =>
+                {
+                    if (other.isMatched)
+                    {
+                        other.MakeBomb(bombType);
+                    }
+                });
+            }
+        });
+    }
+
+    private bool IsFiveOfAKindInStraightLine()
+    {
+        int horizontalDotsCount = 0;
+        int verticalDotsCount = 0;
+        findMatches.currentMatches[0].GetComponent<Dot>()?.Also(firstDot =>
+        {
+            foreach (var dot in findMatches.currentMatches)
+            {
+                var dotScript = dot.GetComponent<Dot>();
+                if (dotScript.row == firstDot.row)
+                {
+                    horizontalDotsCount++;
+                }
+                if (dotScript.column == firstDot.column)
+                {
+                    verticalDotsCount++;
+                }
+            }
+        });
+        return horizontalDotsCount == 5 || verticalDotsCount == 5;
+    }
+
     private IEnumerator DecreaseRowCoroutine()
     {
         int nullCount = 0;
-        this.doForEveryDot((c, r) => {
+        this.doForEveryDot((c, r) =>
+        {
             if (allDotsOnBoard[c, r] == null)
             {
                 nullCount++;
@@ -134,7 +198,8 @@ public class Board : MonoBehaviour
                 allDotsOnBoard[c, r].GetComponent<Dot>().row -= nullCount;
                 allDotsOnBoard[c, r] = null;
             }
-        }, afterEachColumnAction: () => {
+        }, afterEachColumnAction: () =>
+        {
             nullCount = 0;
         });
         yield return new WaitForSeconds(0.4f);
@@ -143,7 +208,8 @@ public class Board : MonoBehaviour
 
     private void RefillBoard()
     {
-        this.doForEveryDot((c, r) => {
+        this.doForEveryDot((c, r) =>
+        {
             if (allDotsOnBoard[c, r] == null)
             {
                 var tempPosition = new Vector2(c, r + offset);
@@ -159,7 +225,8 @@ public class Board : MonoBehaviour
     private bool AreAnyMatchesOnBoard()
     {
         var areAnyMatchesOnBoard = false;
-        this.doForEveryDot((c, r) => {
+        this.doForEveryDot((c, r) =>
+        {
             if (allDotsOnBoard[c, r] != null && allDotsOnBoard[c, r].GetComponent<Dot>().isMatched)
             {
                 areAnyMatchesOnBoard = true;
@@ -172,7 +239,7 @@ public class Board : MonoBehaviour
     {
         RefillBoard();
         yield return new WaitForSeconds(0.5f);
-        while(AreAnyMatchesOnBoard())
+        while (AreAnyMatchesOnBoard())
         {
             yield return new WaitForSeconds(0.5f);
             DestroyAllMatches();
