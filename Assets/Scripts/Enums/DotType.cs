@@ -7,7 +7,8 @@ public enum DotType
     Normal,
     RowBomb,
     ColumnBomb,
-    ColorBomb
+    ColorBomb,
+    AdjacentBomb
 }
 
 public class DotTypeHelpers {
