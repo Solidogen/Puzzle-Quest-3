@@ -20,9 +20,10 @@ public class Dot : MonoBehaviour
 
     [Header("Powerup Variables")]
     public DotType dotType = DotType.Normal;
-    public GameObject columnArrow;
-    public GameObject rowArrow;
+    public GameObject columnBomb;
+    public GameObject rowBomb;
     public GameObject colorBomb;
+    public GameObject adjacentBomb;
 
     private FindMatches findMatches;
     private Board board;
@@ -247,10 +248,10 @@ public class Dot : MonoBehaviour
         switch (dotType)
         {
             case DotType.ColumnBomb:
-                bombToInstantiate = columnArrow;
+                bombToInstantiate = columnBomb;
                 break;
             case DotType.RowBomb:
-                bombToInstantiate = rowArrow;
+                bombToInstantiate = rowBomb;
                 break;
             default:
                 throw new InvalidOperationException("Bomb type not handled");
@@ -267,7 +268,8 @@ public class Dot : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             dotType = DotType.ColorBomb;
-            Instantiate(colorBomb, transform.position, Quaternion.identity).Also(bomb => {
+            Instantiate(colorBomb, transform.position, Quaternion.identity).Also(bomb =>
+            {
                 bomb.transform.parent = transform;
             });
         }

@@ -102,11 +102,12 @@ MonoBehaviour:
   isMatched: 0
   radianAngle: 0
   dotType: 0
-  columnArrow: {fileID: 8590658647419626152, guid: bec6af35eea8448498f9a525d7d2e3a2,
+  columnBomb: {fileID: 8590658647419626152, guid: bec6af35eea8448498f9a525d7d2e3a2,
     type: 3}
-  rowArrow: {fileID: 2171752145102463879, guid: 8cfb47e28a403244884b3159f6da69d2,
-    type: 3}
+  rowBomb: {fileID: 2171752145102463879, guid: 8cfb47e28a403244884b3159f6da69d2, type: 3}
   colorBomb: {fileID: 7629977092595768825, guid: 80707192dcf41954e81784812d933df5,
+    type: 3}
+  adjacentBomb: {fileID: 2798727803861110941, guid: d972411a2e289e04cbb25a61c50cc97c,
     type: 3}
   otherDot: {fileID: 0}
 --- !u!58 &8986646202543333694
