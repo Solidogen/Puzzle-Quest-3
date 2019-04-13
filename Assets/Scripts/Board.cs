@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class Board : MonoBehaviour
 {
+    private FindMatches findMatches;
     public GameState currentState = GameState.Move;
     public int width;
     public int height;
@@ -17,6 +18,7 @@ public class Board : MonoBehaviour
 
     void Start()
     {
+        findMatches = FindObjectOfType<FindMatches>();
         allBackgroundTiles = new BackgroundTile[width, height];
         allDotsOnBoard = new GameObject[width, height];
         Setup();
@@ -95,6 +97,7 @@ public class Board : MonoBehaviour
     {
         if (allDotsOnBoard[column, row] != null && allDotsOnBoard[column, row].GetComponent<Dot>().isMatched)
         {
+            findMatches.currentMatches.Remove(allDotsOnBoard[column, row]);
             Destroy(allDotsOnBoard[column, row]);
             allDotsOnBoard[column, row] = null;
         }
