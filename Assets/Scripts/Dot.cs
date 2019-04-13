@@ -277,8 +277,8 @@ public class Dot : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            dotType = DotType.AdjacentBomb;
-            Instantiate(adjacentBomb, transform.position, Quaternion.identity).Also(bomb =>
+            dotType = DotType.ColorBomb;
+            Instantiate(colorBomb, transform.position, Quaternion.identity).Also(bomb =>
             {
                 bomb.transform.parent = transform;
             });

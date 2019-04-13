@@ -112,7 +112,7 @@ public class Board : MonoBehaviour
             // how many elements are in the matched pieces list?
             if (findMatches.currentMatches.Count > 3)
             {
-                findMatches.CheckDirectionalBombs();
+                CheckIfNeedToMakeBombs();
             }
 
             GameObject particle = Instantiate(destroyEffect, allDotsOnBoard[column, row].transform.position, Quaternion.identity);
@@ -244,7 +244,6 @@ public class Board : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             DestroyAllMatches();
         }
-        findMatches.currentMatches.Clear();
         currentDot = null;
         yield return new WaitForSeconds(0.5f);
         currentState = GameState.Move;
