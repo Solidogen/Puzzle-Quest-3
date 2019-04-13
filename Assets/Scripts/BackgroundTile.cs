@@ -6,16 +6,5 @@ public class BackgroundTile : MonoBehaviour
 {
     void Start()
     {
-        Setup();
-    }
-
-    void Update()
-    {
-        
-    }
-
-    void Setup()
-    {
-
     }
 }

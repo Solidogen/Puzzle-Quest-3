@@ -24,7 +24,7 @@ public class Board : MonoBehaviour
 
     private void Setup()
     {
-        doForEveryDot((i, j) =>
+        this.doForEveryDot((i, j) =>
         {
             var cellName = $"( {i}, {j} )";
 
@@ -102,7 +102,7 @@ public class Board : MonoBehaviour
 
     public void DestroyAllMatches()
     {
-        doForEveryDot((i, j) =>
+        this.doForEveryDot((i, j) =>
         {
             DestroyMatchesAt(i, j);
         });
@@ -112,7 +112,7 @@ public class Board : MonoBehaviour
     private IEnumerator DecreaseRowCoroutine()
     {
         int nullCount = 0;
-        doForEveryDot((i, j) => {
+        this.doForEveryDot((i, j) => {
             if (allDotsOnBoard[i, j] == null)
             {
                 nullCount++;
@@ -129,21 +129,9 @@ public class Board : MonoBehaviour
         StartCoroutine(FillBoardCoroutine());
     }
 
-    private void doForEveryDot(Action<int, int> mainAction, Action afterEachColumnAction = null)
-    {
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                mainAction.Invoke(i, j);
-            }
-            afterEachColumnAction?.Invoke();
-        }
-    }
-
     private void RefillBoard()
     {
-        doForEveryDot((i, j) => {
+        this.doForEveryDot((i, j) => {
             if (allDotsOnBoard[i, j] == null)
             {
                 var tempPosition = new Vector2(i, j + offset);
@@ -159,7 +147,7 @@ public class Board : MonoBehaviour
     private bool AreAnyMatchesOnBoard()
     {
         var areAnyMatchesOnBoard = false;
-        doForEveryDot((i, j) => {
+        this.doForEveryDot((i, j) => {
             if (allDotsOnBoard[i, j] != null && allDotsOnBoard[i, j].GetComponent<Dot>().isMatched)
             {
                 areAnyMatchesOnBoard = true;
