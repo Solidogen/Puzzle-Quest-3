@@ -97,7 +97,7 @@ public class Dot : MonoBehaviour
             findMatches.MatchDotsOfColor(gameObject.tag);
             otherDot.GetComponent<Dot>().isMatched = true;
         }
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
         if (otherDot != null)
         {
             var otherDotScript = otherDot.GetComponent<Dot>();
@@ -241,6 +241,7 @@ public class Dot : MonoBehaviour
 
     public void MakeBomb(DotType type)
     {
+        isMatched = false;
         dotType = type;
         GameObject bombToInstantiate = null;
         switch (dotType)

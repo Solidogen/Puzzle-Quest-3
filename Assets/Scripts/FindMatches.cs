@@ -33,9 +33,9 @@ public class FindMatches : MonoBehaviour
                     var leftDot = board.allDotsOnBoard[c - 1, r];
                     var rightDot = board.allDotsOnBoard[c + 1, r];
 
-                    if (leftDot != null && rightDot != null)
+                    if (leftDot != null && rightDot != null && leftDot.tag == dot.tag && rightDot.tag == dot.tag)
                     {
-                        if (isAnyDotOfType(DotType.RowBomb, dot, leftDot, rightDot))
+                        if (isAnyDotOfType(DotType.RowBomb, dot, leftDot))
                         {
                             currentMatches.Union(GetDotsForRowAndSetMatched(r));
                         }
@@ -51,12 +51,9 @@ public class FindMatches : MonoBehaviour
                         {
                             currentMatches.Union(GetDotsForColumnAndSetMatched(c + 1));
                         }
-                        if (leftDot != null && rightDot != null && leftDot.tag == dot.tag && rightDot.tag == dot.tag)
-                        {
-                            AddToListAndMatch(dot);
-                            AddToListAndMatch(leftDot);
-                            AddToListAndMatch(rightDot);
-                        }
+                        AddToListAndMatch(dot);
+                        AddToListAndMatch(leftDot);
+                        AddToListAndMatch(rightDot);
                     }
                 }
                 if (r > 0 && r < board.height - 1)
@@ -64,7 +61,7 @@ public class FindMatches : MonoBehaviour
                     var upDot = board.allDotsOnBoard[c, r + 1];
                     var downDot = board.allDotsOnBoard[c, r - 1];
 
-                    if (upDot != null && downDot != null)
+                    if (upDot != null && downDot != null && upDot.tag == dot.tag && downDot.tag == dot.tag)
                     {
                         if (isAnyDotOfType(DotType.ColumnBomb, dot, upDot, downDot))
                         {
@@ -82,12 +79,9 @@ public class FindMatches : MonoBehaviour
                         {
                             currentMatches.Union(GetDotsForRowAndSetMatched(r - 1));
                         }
-                        if (upDot != null && downDot != null && upDot.tag == dot.tag && downDot.tag == dot.tag)
-                        {
-                            AddToListAndMatch(dot);
-                            AddToListAndMatch(upDot);
-                            AddToListAndMatch(downDot);
-                        }
+                        AddToListAndMatch(dot);
+                        AddToListAndMatch(upDot);
+                        AddToListAndMatch(downDot);
                     }
                 }
             });
@@ -101,8 +95,8 @@ public class FindMatches : MonoBehaviour
         {
             if (board.allDotsOnBoard[c, r] != null)
             {
-                board.allDotsOnBoard[c, r].GetComponent<Dot>().isMatched = true;
                 dots.Add(board.allDotsOnBoard[c, r]);
+                board.allDotsOnBoard[c, r].GetComponent<Dot>().isMatched = true;
             }
         });
         return dots;
@@ -115,8 +109,8 @@ public class FindMatches : MonoBehaviour
         {
             if (board.allDotsOnBoard[c, r] != null)
             {
-                board.allDotsOnBoard[c, r].GetComponent<Dot>().isMatched = true;
                 dots.Add(board.allDotsOnBoard[c, r]);
+                board.allDotsOnBoard[c, r].GetComponent<Dot>().isMatched = true;
             }
         });
         return dots;
@@ -136,7 +130,6 @@ public class FindMatches : MonoBehaviour
         if (board.currentDot.isMatched)
         {
             // unmatch and swap for a bomb
-            board.currentDot.isMatched = false;
             board.currentDot.MakeBomb(DotTypeHelpers.GetRandomDirectionBomb());
         }
         else if (board.currentDot.otherDot != null)
@@ -144,7 +137,6 @@ public class FindMatches : MonoBehaviour
             var otherDot = board.currentDot.otherDot.GetComponent<Dot>();
             if (otherDot.isMatched)
             {
-                otherDot.isMatched = false;
                 otherDot.MakeBomb(DotTypeHelpers.GetRandomDirectionBomb());
             }
         }
@@ -165,7 +157,7 @@ public class FindMatches : MonoBehaviour
         if (!currentMatches.Contains(dot))
         {
             currentMatches.Add(dot);
+            dot.GetComponent<Dot>().isMatched = true;
         }
-        dot.GetComponent<Dot>().isMatched = true;
     }
 }
