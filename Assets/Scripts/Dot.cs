@@ -145,9 +145,9 @@ public class Dot : MonoBehaviour
             board.currentState = GameState.Move;
             return;
         }
+        board.currentState = GameState.Wait;
         radianAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
         CheckAngle();
-        board.currentState = GameState.Wait;
         board.currentDot = this;
     }
 
@@ -155,55 +155,45 @@ public class Dot : MonoBehaviour
     {
         SwipeHelpers.getSwipeAngleFromRadian(radianAngle).Also(angle =>
         {
-            SwapGemIfPossible(angle);
+            CheckIfSwappingIsPossible(angle);
         });
     }
 
-    private void SwapGemIfPossible(SwipeAngle swipeAngle)
+    private void CheckIfSwappingIsPossible(SwipeAngle swipeAngle)
     {
-        switch (swipeAngle)
+        if (swipeAngle == SwipeAngle.Right && column < board.width - 1)
         {
-            case SwipeAngle.Right:
-                if (column < board.width - 1)
-                {
-                    otherDot = board.allDotsOnBoard[column + 1, row];
-                    previousRow = row;
-                    previousColumn = column;
-                    otherDot.GetComponent<Dot>().column--;
-                    column++;
-                }
-                break;
-            case SwipeAngle.Up:
-                if (row < board.height - 1)
-                {
-                    otherDot = board.allDotsOnBoard[column, row + 1];
-                    previousRow = row;
-                    previousColumn = column;
-                    otherDot.GetComponent<Dot>().row--;
-                    row++;
-                }
-                break;
-            case SwipeAngle.Left:
-                if (column > 0)
-                {
-                    otherDot = board.allDotsOnBoard[column - 1, row];
-                    previousRow = row;
-                    previousColumn = column;
-                    otherDot.GetComponent<Dot>().column++;
-                    column--;
-                }
-                break;
-            case SwipeAngle.Down:
-                if (row > 0)
-                {
-                    otherDot = board.allDotsOnBoard[column, row - 1];
-                    previousRow = row;
-                    previousColumn = column;
-                    otherDot.GetComponent<Dot>().row++;
-                    row--;
-                }
-                break;
+            SwapDots(Vector2.right);
         }
+        else if (swipeAngle == SwipeAngle.Up && row < board.height - 1)
+        {
+            SwapDots(Vector2.up);
+        }
+        else if (swipeAngle == SwipeAngle.Left && column > 0)
+        {
+            SwapDots(Vector2.left);
+        }
+        if (swipeAngle == SwipeAngle.Down && row > 0)
+        {
+            SwapDots(Vector2.down);
+        }
+        else
+        {
+            board.currentState = GameState.Move;
+        }
+    }
+
+    private void SwapDots(Vector2 direction)
+    {
+        otherDot = board.allDotsOnBoard[column + (int)direction.x, row + (int)direction.y];
+        previousRow = row;
+        previousColumn = column;
+        otherDot.GetComponent<Dot>().Also(other => {
+            other.column -= (int)direction.x;
+            other.row -= (int)direction.y;
+        });
+        column += (int)direction.x;
+        row += (int)direction.y;
         StartCoroutine(CheckMoveCoroutine());
     }
 
