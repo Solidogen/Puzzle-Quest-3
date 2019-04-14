@@ -366,9 +366,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 1
-  width: 7
-  height: 10
-  offset: 80
+  width: 8
+  height: 8
+  offset: 10
   tilePrefab: {fileID: 4598511092701461150, guid: 3217a845f1d1f794a94d462bd07d78de,
     type: 3}
   availableDotColors:
@@ -395,6 +395,7 @@ GameObject:
   - component: {fileID: 1209951000}
   - component: {fileID: 1209950999}
   - component: {fileID: 1209951002}
+  - component: {fileID: 1209951003}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -460,7 +461,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1209950998}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 5, z: -10}
+  m_LocalPosition: {x: 3, y: 5, z: -13.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -478,6 +479,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43042f50d9f8ffb438da9af076fb9397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1209951003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209950998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 897ce14551367b648be83ee512a18092, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraOffsetZ: -10
+  aspectRatio: 0.5625
+  padding: 2
 --- !u!1 &1456953845
 GameObject:
   m_ObjectHideFlags: 0
