@@ -368,7 +368,7 @@ MonoBehaviour:
   currentState: 1
   width: 8
   height: 8
-  offset: 10
+  offset: 80
   tilePrefab: {fileID: 4598511092701461150, guid: 3217a845f1d1f794a94d462bd07d78de,
     type: 3}
   availableDotColors:
